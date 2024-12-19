@@ -11,23 +11,22 @@ interface PageProps {
 
 function BlogPostSkeleton() {
   return (
-    <div className="animate-pulse">
-      <div className="h-8 bg-gray-200 rounded w-3/4 mb-8"></div>
-      <div className="space-y-4">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="h-4 bg-gray-200 rounded w-full"></div>
-        ))}
-      </div>
+    <div className="animate-pulse space-y-4">
+      <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-200 rounded"></div>
+      <div className="h-4 bg-gray-200 rounded"></div>
+      <div className="h-4 bg-gray-200 rounded"></div>
     </div>
   )
 }
 
 function RelatedPostsSkeleton() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-2 gap-4">
       {[...Array(6)].map((_, i) => (
-        <div key={i} className="animate-pulse">
+        <div key={i} className="animate-pulse space-y-2">
           <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
         </div>
       ))}
     </div>
@@ -39,7 +38,6 @@ async function BlogPostContent({ title, hostname }: { title: string; hostname: s
   let post = await getBlogPost(hostname, formattedTitle, process.env as unknown as Env)
 
   if (!post) {
-    // Generate and store the blog post if it doesn't exist
     await storeBlogPost(hostname, formattedTitle, process.env as unknown as Env)
     post = await getBlogPost(hostname, formattedTitle, process.env as unknown as Env)
   }
@@ -61,9 +59,9 @@ async function RelatedPosts({ title, hostname }: { title: string; hostname: stri
   const relatedPosts = await findRelatedPosts(hostname, formattedTitle, process.env as unknown as Env)
 
   return (
-    <div className="mt-12">
+    <section>
       <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-4">
         {relatedPosts.map((post) => (
           <a
             key={post.title}
@@ -74,7 +72,7 @@ async function RelatedPosts({ title, hostname }: { title: string; hostname: stri
           </a>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 
@@ -83,14 +81,16 @@ export default function BlogPostPage({ params }: PageProps) {
   const hostname = headersList.get('host') || 'localhost'
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <article className="prose mx-auto p-6">
       <Suspense fallback={<BlogPostSkeleton />}>
         <BlogPostContent title={params.title} hostname={hostname} />
       </Suspense>
 
+      <hr className="my-8" />
+
       <Suspense fallback={<RelatedPostsSkeleton />}>
         <RelatedPosts title={params.title} hostname={hostname} />
       </Suspense>
-    </main>
+    </article>
   )
 }

@@ -27,10 +27,10 @@ async function getBlogTitles(): Promise<BlogTitle[]> {
 function BlogTitleSkeleton() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {[...Array(6)].map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mt-2"></div>
+      {[...Array(9)].map((_, i) => (
+        <div key={i} className="animate-pulse space-y-2 p-4 border rounded-lg">
+          <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
         </div>
       ))}
     </div>
@@ -57,7 +57,7 @@ async function BlogTitleList() {
 
 export default function BlogPage() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto p-6">
       <h1 className="text-4xl font-bold mb-8">Blog Posts</h1>
       <Suspense fallback={<BlogTitleSkeleton />}>
         <BlogTitleList />
