@@ -1,4 +1,12 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+import { withOpenNextConfig } from '@opennextjs/cloudflare';
 
-export default nextConfig
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    serverActions: true,
+  },
+};
+
+export default withOpenNextConfig(nextConfig);
