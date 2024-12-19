@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# blogs.do - AI-Powered Dynamic Blog Platform
+
+A Next.js-based blogging platform that automatically generates and manages blog content using AI, deployed on Cloudflare Workers.
+
+## Features
+
+- **Dynamic Blog Generation**: Automatically generates blog posts using Cloudflare Workers AI
+- **Domain-Based Content**: Creates unique content for each hostname
+- **Vector Search**: Finds related articles using AI-powered vector similarity
+- **SEO Optimized**: Automatic sitemap generation and crawler-friendly configuration
+- **Streaming UI**: Real-time content updates with React Suspense
+
+## Technology Stack
+
+- **Framework**: Next.js with OpenNext for Cloudflare Workers deployment
+- **AI Models**:
+  - Content Generation: llama-3.3-70b-instruct-fp8-fast
+  - Vector Embeddings: bge-small-en-v1.5
+- **Storage**: Cloudflare Vectorize for content and embeddings
+- **UI**: React Server Components with Suspense for streaming
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- pnpm
+- Cloudflare Workers account
+- Cloudflare AI and Vectorize enabled
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install dependencies
+pnpm install
+
+# Configure Cloudflare bindings
+# Add the following to wrangler.toml:
+# [[ai]]
+# binding = "AI"
+#
+# [[vectorize]]
+# binding = "BLOG_INDEX"
+# index_name = "blog-content"
+
+# Deploy to Cloudflare Workers
+pnpm run deploy
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Content Generation**: Uses Workers AI to generate blog titles and content
+- **Vector Storage**: Stores articles with host+title as ID in Vectorize
+- **SEO**: Automatic sitemap.xml generation and robots.txt configuration
+- **UI Components**:
+  - Home page with streaming title generation
+  - Blog post pages with immediate title rendering
+  - Related posts using vector similarity search
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Development
 
-## Learn More
+See [TODO.md](TODO.md) for implementation details and progress tracking.
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+MIT
