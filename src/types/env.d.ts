@@ -10,6 +10,11 @@ export interface CloudflareEnv {
     upsert(id: string, vector: number[], metadata?: Record<string, any>): Promise<void>;
     getByIds(ids: string[]): Promise<Array<{ id: string; metadata?: Record<string, any> }>>;
   };
+  BLOG_CACHE: {
+    put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
+    get(key: string): Promise<string | null>;
+    delete(key: string): Promise<void>;
+  };
   ASSETS: { fetch: typeof fetch };
 }
 

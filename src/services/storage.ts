@@ -42,6 +42,13 @@ export async function getBlogTitles(hostname: string, env: CloudflareEnv): Promi
 export async function storeBlogPost(hostname: string, title: string, content: string, embedding: number[], env: CloudflareEnv): Promise<void> {
   try {
     const id = getBlogId(hostname, title)
+    const cacheKey = `post:${id}`
+    const blogPost = { title, content, embedding }
+
+    // Store in cache with 24-hour expiration
+    await env.BLOG_CACHE.put(cacheKey, JSON.stringify(blogPost), { expirationTtl: 86400 })
+
+    // Store in vector index
     await env.BLOG_INDEX.upsert(id, embedding, { title, content })
   } catch (error) {
     console.error('Error storing blog post:', error)
@@ -52,8 +59,16 @@ export async function storeBlogPost(hostname: string, title: string, content: st
 export async function getBlogPost(hostname: string, title: string, env: CloudflareEnv): Promise<BlogPost | null> {
   try {
     const id = getBlogId(hostname, title)
-    const results = await env.BLOG_INDEX.getByIds([id])
+    const cacheKey = `post:${id}`
 
+    // Try cache first
+    const cached = await env.BLOG_CACHE.get(cacheKey)
+    if (cached) {
+      return JSON.parse(cached) as BlogPost
+    }
+
+    // Fallback to vector index
+    const results = await env.BLOG_INDEX.getByIds([id])
     if (!results.length || !results[0].metadata) {
       return null
     }
@@ -67,7 +82,7 @@ export async function getBlogPost(hostname: string, title: string, env: Cloudfla
 
 export async function findRelatedPosts(embedding: number[], env: CloudflareEnv, limit: number = 6): Promise<Array<{ id: string; title: string; score: number }>> {
   try {
-    const results = await env.BLOG_INDEX.query(embedding, { topK: limit })
+    const results = await env.BLOG_INDEX.query(embedding, limit)
     return results.map(({ id, score, metadata }) => ({
       id,
       title: metadata?.title || id.split(':')[1].replace(/_/g, ' '),
