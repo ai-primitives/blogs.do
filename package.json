@@ -10,7 +10,7 @@
     "deploy": "cloudflare && wrangler deploy",
     "preview": "cloudflare && wrangler dev",
     "format": "prettier --write .",
-    "types": "wrangler types --env-interface CloudflareEnv env.d.ts"
+    "types": "wrangler types --experimental-include-runtime --env-interface CloudflareEnv env.d.ts"
   },
   "dependencies": {
     "next": "14.2.5",
