@@ -15,6 +15,9 @@ export interface CloudflareEnv {
     get(key: string): Promise<string | null>;
     delete(key: string): Promise<void>;
   };
+  RATE_LIMITER: {
+    check(key: string): Promise<{ success: boolean; remaining: number }>;
+  };
   ASSETS: { fetch: typeof fetch };
 }
 
