@@ -15,6 +15,7 @@ export interface CloudflareEnv {
     get(key: string): Promise<string | null>;
     delete(key: string): Promise<void>;
   };
+  BLOG_LOCKS: KVNamespace;
   RATE_LIMITER: {
     check(key: string): Promise<{ success: boolean; remaining: number }>;
   };
