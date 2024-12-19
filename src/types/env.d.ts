@@ -18,6 +18,9 @@ export interface CloudflareEnv {
   RATE_LIMITER: {
     check(key: string): Promise<{ success: boolean; remaining: number }>;
   };
+  BLOG_QUEUE: {
+    send(message: { type: string; hostname: string }): Promise<void>;
+  };
   ASSETS: { fetch: typeof fetch };
 }
 
