@@ -19,6 +19,11 @@ max_batch_size = 10
 max_batch_timeout = 30
 max_retries = 3
 
+[[kv_namespaces]]
+binding = "BLOG_LOCKS"
+id = "blog-locks-kv"
+preview_id = "blog-locks-preview"
+
 [build]
 command = "pnpm run build"
 cwd = "."
