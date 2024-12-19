@@ -1,17 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-
-export function middleware(request: NextRequest) {
-  // Add Cloudflare env to request.cf
-  const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-hostname', request.headers.get('host') || '')
-
-  return NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  })
-}
+import type { CloudflareEnv } from './types/env'
 
 export const config = {
   matcher: [
@@ -19,4 +8,35 @@ export const config = {
     '/sitemap.xml',
     '/robots.txt',
   ],
+}
+
+export async function middleware(request: NextRequest) {
+  const env = request.cf as unknown as CloudflareEnv
+  const hostname = request.headers.get('host') || 'default'
+
+  // Set hostname header for downstream use
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-hostname', hostname)
+
+  // Rate limit based on hostname and path
+  const key = `${hostname}:${request.nextUrl.pathname}`
+  const limit = await env.RATE_LIMITER.check(key)
+
+  if (!limit.success) {
+    return new Response('Rate limit exceeded', {
+      status: 429,
+      headers: {
+        'Content-Type': 'text/plain',
+        'Retry-After': '60',
+        'X-RateLimit-Limit': '60',
+        'X-RateLimit-Remaining': String(limit.remaining),
+      },
+    })
+  }
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  })
 }
