@@ -9,6 +9,16 @@ binding = "AI"
 binding = "BLOG_INDEX"
 index_name = "blog-content"
 
+[[queues.producers]]
+binding = "BLOG_QUEUE"
+queue = "blog-tasks"
+
+[[queues.consumers]]
+queue = "blog-tasks"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 3
+
 [build]
 command = "pnpm run build"
 cwd = "."
