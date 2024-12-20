@@ -1,13 +1,13 @@
 import type { CloudflareEnv } from '../types/env'
 import type { VectorizeStorage } from '../types/workers'
 
-interface BlogPost {
+export interface BlogPost {
   title: string
   content: string
   embedding: number[]
 }
 
-interface BlogTitles {
+export interface BlogTitles {
   titles: string[]
 }
 
