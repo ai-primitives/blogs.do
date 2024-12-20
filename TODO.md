@@ -1,5 +1,13 @@
 # Implementation Plan
 
+## Blockers
+### Build Dependencies
+- [x] Next.js runtime dependency 'critters' not found
+  - Error: Could not resolve "critters" in next-server/pages.runtime.prod.js
+  - Impact: Blocks production build process
+  - Resolution: Disabled experimental optimizeCss feature in next.config.mjs
+  - Status: Resolved, build passing
+
 ## Architecture Overview
 - NextJS application deployed on Cloudflare Workers via OpenNext
 - Vector storage using Cloudflare Vectorize for blog content and embeddings
