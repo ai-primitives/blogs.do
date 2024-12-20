@@ -1,7 +1,7 @@
 name = 'blogs-do'
 compatibility_date = '2024-12-19'
 compatibility_flags = ['nodejs_compat']
-main = '.worker-next/index.js'
+main = '.worker-next/index.mjs'
 
 [ai]
 binding = 'AI'
