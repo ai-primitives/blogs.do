@@ -23,8 +23,8 @@
 
 ### 3. SEO Implementation
 - [x] Configure robots.txt to allow all crawlers
-  - Implemented as Next.js route handler returning proper Response object
-  - Added content-type header for text/plain
+  - Implemented using Next.js metadata API (robots.ts)
+  - Maintains hostname-based sitemap URL generation
 - [x] Implement dynamic sitemap.xml generation
   - Using Next.js file-based sitemap.ts convention
   - Includes hostname-based content detection

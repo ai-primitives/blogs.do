@@ -6,7 +6,6 @@ export const config = {
   matcher: [
     '/blog/:path*',
     '/sitemap.xml',
-    '/robots.txt',
   ],
 }
 
