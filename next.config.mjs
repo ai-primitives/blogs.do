@@ -5,10 +5,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    serverActions: true,
     optimizeCss: false,
   },
-};
+}
 
 // export default withOpenNextConfig(nextConfig);
 

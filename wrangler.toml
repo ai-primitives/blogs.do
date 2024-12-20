@@ -1,41 +1,42 @@
-name = "blogs-do"
-compatibility_date = "2024-12-19"
-compatibility_flags = ["nodejs_compat"]
+name = 'blogs-do'
+compatibility_date = '2024-12-19'
+compatibility_flags = ['nodejs_compat']
+main = '.worker-next/index.mjs'
 
 [ai]
-binding = "AI"
+binding = 'AI'
 
 [[vectorize]]
-binding = "BLOG_INDEX"
-index_name = "blog-content"
+binding = 'BLOG_INDEX'
+index_name = 'blog-content'
 
 [[queues.producers]]
-binding = "BLOG_QUEUE"
-queue = "blog-tasks"
+binding = 'BLOG_QUEUE'
+queue = 'blog-tasks'
 
 [[queues.consumers]]
-queue = "blog-tasks"
+queue = 'blog-tasks'
 max_batch_size = 10
 max_batch_timeout = 30
 max_retries = 3
 
 [[kv_namespaces]]
-binding = "BLOG_LOCKS"
-id = "blog-locks-kv"
-preview_id = "blog-locks-preview"
+binding = 'BLOG_LOCKS'
+id = 'blog-locks-kv'
+preview_id = 'blog-locks-preview'
 
 [build]
-command = "pnpm run build"
-cwd = "."
-watch_dir = "src"
+command = 'pnpm run build'
+cwd = '.'
+watch_dir = 'src'
 
 [site]
-bucket = ".vercel/output/static"
+bucket = '.vercel/output/static'
 
 [env.production]
-name = "blogs-do-prod"
-route = "blogs.do/*"
+name = 'blogs-do-prod'
+route = 'blogs.do/*'
 
 [env.staging]
-name = "blogs-do-staging"
-route = "staging.blogs.do/*"
+name = 'blogs-do-staging'
+route = 'staging.blogs.do/*'
