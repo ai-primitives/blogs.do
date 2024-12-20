@@ -33,9 +33,16 @@ export async function middleware(request: NextRequest) {
     })
   }
 
-  return NextResponse.next({
+  const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   })
+
+  Object.defineProperty(response, 'locals', {
+    value: { env },
+    writable: false
+  })
+
+  return response
 }
