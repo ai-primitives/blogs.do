@@ -1,4 +1,4 @@
-import { withOpenNextConfig } from '@opennextjs/cloudflare';
+// import { withOpenNextConfig } from '@opennextjs/cloudflare';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,4 +9,6 @@ const nextConfig = {
   },
 };
 
-export default withOpenNextConfig(nextConfig);
+// export default withOpenNextConfig(nextConfig);
+
+export default nextConfig;
