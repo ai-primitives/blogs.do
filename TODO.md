@@ -22,9 +22,14 @@
 - [ ] Create vector similarity search for related posts
 
 ### 3. SEO Implementation
-- [ ] Configure robots.txt to allow all crawlers
-- [ ] Implement dynamic sitemap.xml generation
-- [ ] Add sitemap link to robots.txt and HTML headers
+- [x] Configure robots.txt to allow all crawlers
+  - Implemented as Next.js route handler returning proper Response object
+  - Added content-type header for text/plain
+- [x] Implement dynamic sitemap.xml generation
+  - Using Next.js file-based sitemap.ts convention
+  - Includes hostname-based content detection
+  - Preserves SEO priorities (home=1.0, blog=0.8, posts=0.6)
+- [x] Add sitemap link to robots.txt and HTML headers
 - [ ] Set up title generation trigger on sitemap request
 
 ### 4. UI Implementation
