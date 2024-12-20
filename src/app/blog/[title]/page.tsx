@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { headers } from 'next/headers'
-import { getBlogPost, findRelatedPosts, storeBlogPost } from '@/services/storage'
-import type { BlogPost } from '@/services/storage'
+import { getBlogPost, findRelatedPosts, storeBlogPost, type BlogPost } from '@/services/storage'
+import { type CloudflareEnv } from '@/types/env'
 
 interface PageProps {
   params: {
@@ -35,11 +35,12 @@ function RelatedPostsSkeleton() {
 
 async function BlogPostContent({ title, hostname }: { title: string; hostname: string }) {
   const formattedTitle = title.replace(/_/g, ' ')
-  let post = await getBlogPost(hostname, formattedTitle, process.env as unknown as Env)
+  const env: CloudflareEnv = process.env as any
+  let post = await getBlogPost(hostname, formattedTitle, { env })
 
   if (!post) {
-    await storeBlogPost(hostname, formattedTitle, process.env as unknown as Env)
-    post = await getBlogPost(hostname, formattedTitle, process.env as unknown as Env)
+    await storeBlogPost(hostname, formattedTitle, '', [], { env })
+    post = await getBlogPost(hostname, formattedTitle, { env })
   }
 
   if (!post) {
@@ -56,7 +57,14 @@ async function BlogPostContent({ title, hostname }: { title: string; hostname: s
 
 async function RelatedPosts({ title, hostname }: { title: string; hostname: string }) {
   const formattedTitle = title.replace(/_/g, ' ')
-  const relatedPosts = await findRelatedPosts(hostname, formattedTitle, process.env as unknown as Env)
+  const env: CloudflareEnv = process.env as any
+  const post = await getBlogPost(hostname, formattedTitle, { env })
+
+  if (!post || !post.embedding) {
+    return null
+  }
+
+  const relatedPosts = await findRelatedPosts(post.embedding, { env })
 
   return (
     <section>

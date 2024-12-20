@@ -1,6 +1,6 @@
 import { type MetadataRoute } from 'next'
 import { headers } from 'next/headers'
-import { type CloudflareEnv } from '../types/env'
+import { type CloudflareEnv } from '@/types/env'
 
 interface BlogPost {
   id: string;
@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get hostname from headers since we're not in a route handler
   const headersList = headers()
   const hostname = headersList.get('host') || 'localhost'
-  const env = process.env as unknown as CloudflareEnv
+  const env: CloudflareEnv = process.env as any
 
   // Check for existing titles
   let titles: string[] = []
